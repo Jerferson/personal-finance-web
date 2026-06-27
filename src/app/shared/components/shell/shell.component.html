@@ -1,0 +1,121 @@
+<app-loading />
+<app-toast-container />
+
+<div class="shell-layout">
+  <!-- Sidebar (desktop) -->
+  <nav class="shell-sidebar d-none d-md-flex flex-column">
+    <div class="shell-brand">
+      <i class="bi bi-wallet2 brand-icon"></i>
+      <div>
+        <div class="brand-name">Finance</div>
+        <div class="brand-badge">Personal</div>
+      </div>
+    </div>
+
+    <ul class="nav flex-column shell-nav mt-1">
+      <li class="nav-group-label">Overview</li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/dashboard'"
+           routerLinkActive="active-nav"
+           [routerLinkActiveOptions]="{ exact: true }">
+          <i class="bi bi-speedometer2 nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/reports'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-bar-chart nav-icon"></i>
+          <span>Reports</span>
+        </a>
+      </li>
+
+      <li class="nav-group-label mt-1">Settings</li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/accounts'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-bank nav-icon"></i>
+          <span>Accounts</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/categories'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-tag nav-icon"></i>
+          <span>Categories</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/projects'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-folder nav-icon"></i>
+          <span>Projects</span>
+        </a>
+      </li>
+
+      <li class="nav-group-label mt-1">Transactions</li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/transactions'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-receipt nav-icon"></i>
+          <span>Transactions</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/scheduled-bills'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-calendar-check nav-icon"></i>
+          <span>Scheduled Bills</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/transfers'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-arrow-left-right nav-icon"></i>
+          <span>Transfers</span>
+        </a>
+      </li>
+
+      <li class="nav-group-label mt-1">Audit</li>
+      <li class="nav-item">
+        <a class="nav-link shell-nav-link"
+           [routerLink]="'/journal-entries'"
+           routerLinkActive="active-nav">
+          <i class="bi bi-journal-text nav-icon"></i>
+          <span>Journal Entries</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="shell-sidebar-footer">
+      Finance Control v1.0
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="shell-content">
+    <router-outlet />
+  </main>
+</div>
+
+<!-- Bottom nav (mobile) -->
+<nav class="bottom-nav d-flex d-md-none">
+  @for (item of navItems.slice(0, 5); track item.route) {
+    <a
+      class="bottom-nav-item"
+      [routerLink]="item.route"
+      routerLinkActive="active-bottom"
+    >
+      <i class="bi {{ item.icon }}"></i>
+      <span>{{ item.label }}</span>
+    </a>
+  }
+</nav>
