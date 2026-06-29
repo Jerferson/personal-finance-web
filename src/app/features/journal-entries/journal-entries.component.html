@@ -55,7 +55,7 @@
           <tbody>
             @for (row of entries(); track row.id) {
               <tr [class.voided-row]="row.status === 'VOIDED'">
-                <td>{{ row.entryDate | date:'MMM d, y' }}</td>
+                <td class="date-cell">{{ row.entryDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td>
                   <span class="cc-chip" [class]="sourceChipClass(row.sourceType)">

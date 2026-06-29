@@ -30,10 +30,10 @@
                     <span class="project-desc">{{ row.description }}</span>
                   }
                 </td>
-                <td>{{ row.startDate ? (row.startDate | date:'mediumDate') : '—' }}</td>
-                <td>
+                <td class="date-cell">{{ row.startDate ? (row.startDate | date:'M/d/yyyy') : '—' }}</td>
+                <td class="date-cell">
                   @if (row.endDate) {
-                    {{ row.endDate | date:'mediumDate' }}
+                    {{ row.endDate | date:'M/d/yyyy' }}
                   } @else {
                     <span class="ongoing">Ongoing</span>
                   }

@@ -1,6 +1,11 @@
 .account-link { text-decoration: none; font-weight: 500; color: var(--cc-primary); }
 .account-link:hover { text-decoration: underline; }
-.actions-cell { display: flex; gap: 4px; justify-content: flex-end; padding: 6px 16px; }
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+  padding: 6px 16px;
+  > * + * { margin-left: 4px; }
+}
 .cc-chip-checking { background: #e0e7ff; color: #3730a3; }
 .cc-chip-savings  { background: #d1fae5; color: #065f46; }
 .cc-chip-cash     { background: #fef3c7; color: #92400e; }

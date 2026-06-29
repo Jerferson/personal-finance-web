@@ -2,4 +2,10 @@
 .project-desc { display: block; font-size: 12px; color: var(--cc-muted); margin-top: 2px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 260px; }
 .ongoing { color: var(--cc-success); font-weight: 500; font-size: 13px; }
-.actions-cell { display: flex; gap: 4px; justify-content: flex-end; padding: 6px 16px; }
+.date-cell { white-space: nowrap; }
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+  padding: 6px 16px;
+  > * + * { margin-left: 4px; }
+}

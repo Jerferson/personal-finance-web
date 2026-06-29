@@ -141,7 +141,7 @@
           <tbody>
             @for (row of recentTxns(); track row.id) {
               <tr>
-                <td>{{ row.transactionDate | date:'MMM d' }}</td>
+                <td class="date-cell">{{ row.transactionDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td><span class="cc-chip" [class]="'cc-chip-' + row.type.toLowerCase()">{{ row.type }}</span></td>
                 <td class="text-end">

@@ -63,7 +63,7 @@
           <tbody>
             @for (row of transactions(); track row.id) {
               <tr [class.voided-row]="row.status === 'VOIDED'">
-                <td>{{ row.transactionDate | date:'MMM d, y' }}</td>
+                <td class="date-cell">{{ row.transactionDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td>{{ accountMap().get(row.accountId)?.name ?? '—' }}</td>
                 <td>{{ categoryMap().get(row.categoryId)?.name ?? '—' }}</td>

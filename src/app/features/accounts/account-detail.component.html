@@ -21,7 +21,7 @@
           [class.negative]="!isPositive(d.balance.balance)">
           {{ d.balance.balance | financialAmount }}
         </p>
-        <p class="bal-date">as of {{ d.balance.date | date:'mediumDate' }}</p>
+        <p class="bal-date">as of {{ d.balance.date | date:'M/d/yyyy' }}</p>
       </div>
 
       <div class="cc-card balance-breakdown">
@@ -65,7 +65,7 @@
             <tbody>
               @for (row of d.transactions; track row.id) {
                 <tr>
-                  <td>{{ row.transactionDate | date:'MMM d' }}</td>
+                  <td class="date-cell">{{ row.transactionDate | date:'M/d/yyyy' }}</td>
                   <td>{{ row.description }}</td>
                   <td>
                     <span class="cc-chip" [class]="'cc-chip-' + row.status.toLowerCase()">{{ row.status }}</span>

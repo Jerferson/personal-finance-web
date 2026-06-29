@@ -52,7 +52,7 @@
             @for (row of bills(); track row.id) {
               <tr [class.row-posted]="row.status === 'POSTED'"
                   [class.row-cancelled]="row.status === 'CANCELLED'">
-                <td>{{ row.dueDate | date:'MMM d, y' }}</td>
+                <td class="date-cell">{{ row.dueDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td>{{ accountMap().get(row.accountId)?.name ?? '—' }}</td>
                 <td>{{ categoryMap().get(row.categoryId)?.name ?? '—' }}</td>

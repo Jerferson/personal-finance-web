@@ -1,6 +1,13 @@
 .filter-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .filter-field { min-width: 130px; flex: 1; }
 .desc-cell { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.actions-cell { display: flex; gap: 2px; justify-content: flex-end; padding: 4px 16px; min-width: 160px; }
+.date-cell { white-space: nowrap; }
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+  padding: 4px 16px;
+  min-width: 160px;
+  > * + * { margin-left: 2px; }
+}
 .row-posted    td { opacity: 0.6; }
 .row-cancelled td { opacity: 0.4; }

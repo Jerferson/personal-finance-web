@@ -8,7 +8,14 @@
 
 .desc-cell { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ref-cell  { font-family: monospace; font-size: 12px; color: var(--cc-muted); }
-.actions-cell { display: flex; gap: 4px; justify-content: flex-end; padding: 4px 16px; min-width: 56px; }
+.date-cell { white-space: nowrap; }
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+  padding: 4px 16px;
+  min-width: 56px;
+  > * + * { margin-left: 4px; }
+}
 .voided-row td { opacity: 0.45; }
 
 .chip-transaction  { background: #e0e7ff; color: #3730a3; }
