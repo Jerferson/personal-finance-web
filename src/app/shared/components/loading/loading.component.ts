@@ -4,11 +4,8 @@ import { LoadingService } from '../../../core/services/loading.service';
 @Component({
   selector: 'app-loading',
   standalone: true,
-  template: `
-    @if (loading.isLoading()) {
-      <div class="top-loading-bar"></div>
-    }
-  `,
+  templateUrl: './loading.component.html',
+  styleUrl: './loading.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoadingComponent {

@@ -1,0 +1,17 @@
+.balance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 600px) { .balance-grid { grid-template-columns: 1fr; } }
+
+.balance-main { text-align: center; }
+.bal-label { margin: 0; font-size: 13px; color: var(--cc-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.bal-value { margin: 8px 0 4px; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; }
+.bal-value.positive { color: var(--cc-success); }
+.bal-value.negative { color: var(--cc-danger); }
+.bal-date { margin: 0; font-size: 12px; color: var(--cc-muted); }
+
+.balance-breakdown { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.breakdown-row { display: flex; justify-content: space-between; align-items: center; }
+.breakdown-label { font-size: 14px; color: var(--cc-muted); }
+
+.cc-chip-checking { background: #e0e7ff; color: #3730a3; }
+.cc-chip-savings  { background: #d1fae5; color: #065f46; }
+.cc-chip-cash     { background: #fef3c7; color: #92400e; }

@@ -1,0 +1,104 @@
+<div class="cc-page">
+  <div class="cc-row">
+    <h2 class="cc-grow" style="margin:0">Transactions</h2>
+    <button class="btn btn-primary btn-sm" (click)="openCreate()">
+      <i class="bi bi-plus-lg"></i> New Transaction
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="cc-card">
+    <form [formGroup]="filterFg" class="filter-row">
+      <select class="form-select form-select-sm filter-field" formControlName="accountId">
+        <option value="">All accounts</option>
+        @for (a of accounts(); track a.id) {
+          <option [value]="a.id">{{ a.name }}</option>
+        }
+      </select>
+
+      <select class="form-select form-select-sm filter-field" formControlName="type">
+        <option value="">All types</option>
+        <option value="INCOME">Income</option>
+        <option value="EXPENSE">Expense</option>
+      </select>
+
+      <select class="form-select form-select-sm filter-field" formControlName="status">
+        <option value="">All statuses</option>
+        <option value="POSTED">Posted</option>
+        <option value="VOIDED">Voided</option>
+      </select>
+
+      <input class="form-control form-control-sm filter-field" type="date"
+        formControlName="startDate" placeholder="From" />
+
+      <input class="form-control form-control-sm filter-field" type="date"
+        formControlName="endDate" placeholder="To" />
+
+      <button class="btn btn-outline-secondary btn-sm" type="button" (click)="clearFilters()">
+        <i class="bi bi-x-lg"></i> Clear
+      </button>
+    </form>
+  </div>
+
+  <!-- Table -->
+  <div class="cc-card" style="padding:0; overflow:hidden">
+    @if (transactions().length === 0) {
+      <app-empty-state icon="bi-receipt" title="No transactions found"
+        subtitle="Adjust filters or create a new transaction" />
+    } @else {
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Account</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th class="text-end">Amount</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of transactions(); track row.id) {
+              <tr [class.voided-row]="row.status === 'VOIDED'">
+                <td>{{ row.transactionDate | date:'MMM d, y' }}</td>
+                <td class="desc-cell">{{ row.description }}</td>
+                <td>{{ accountMap().get(row.accountId)?.name ?? '—' }}</td>
+                <td>{{ categoryMap().get(row.categoryId)?.name ?? '—' }}</td>
+                <td><span class="cc-chip" [class]="'cc-chip-' + row.type.toLowerCase()">{{ row.type }}</span></td>
+                <td><span class="cc-chip" [class]="'cc-chip-' + row.status.toLowerCase()">{{ row.status }}</span></td>
+                <td class="text-end">
+                  <span class="cc-amount"
+                    [class.cc-amount-income]="row.type === 'INCOME'"
+                    [class.cc-amount-expense]="row.type === 'EXPENSE'">
+                    {{ row.amount | financialAmount }}
+                  </span>
+                </td>
+                <td class="actions-cell">
+                  @if (row.status === 'POSTED') {
+                    <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openEdit(row)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" title="Void" (click)="voidTransaction(row)">
+                      <i class="bi bi-slash-circle"></i>
+                    </button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <app-bs-paginator
+      [length]="total()"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageIndex()"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+    />
+  </div>
+</div>

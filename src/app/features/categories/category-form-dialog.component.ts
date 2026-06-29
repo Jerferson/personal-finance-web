@@ -13,40 +13,8 @@ export interface CategoryFormDialogData {
   selector: 'app-category-form-dialog',
   standalone: true,
   imports: [ReactiveFormsModule],
-  template: `
-    <div class="modal-header">
-      <h5 class="modal-title">{{ isEdit ? 'Edit Category' : 'New Category' }}</h5>
-      <button type="button" class="btn-close" (click)="dialogRef.close(false)"></button>
-    </div>
-
-    <div class="modal-body">
-      <form [formGroup]="fg" (ngSubmit)="submit()">
-        <div class="mb-3">
-          <label class="form-label">Name</label>
-          <input class="form-control" formControlName="name" autocomplete="off"
-            [class.is-invalid]="fg.controls.name.invalid && fg.controls.name.touched" />
-          <div class="invalid-feedback">Name is required</div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Type</label>
-          <select class="form-select" formControlName="type">
-            <option value="INCOME">Income</option>
-            <option value="EXPENSE">Expense</option>
-          </select>
-        </div>
-      </form>
-    </div>
-
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="dialogRef.close(false)">Cancel</button>
-      <button type="button" class="btn btn-primary" [disabled]="fg.invalid || submitting()" (click)="submit()">
-        @if (submitting()) { <span class="spinner-border spinner-border-sm me-1"></span> }
-        {{ isEdit ? 'Save' : 'Create' }}
-      </button>
-    </div>
-  `,
-  styles: [`.modal-body { min-width: 320px; }`],
+  templateUrl: './category-form-dialog.component.html',
+  styleUrl: './category-form-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryFormDialogComponent {

@@ -1,0 +1,28 @@
+.summary-card { display: flex; flex-direction: column; gap: 4px; }
+.summary-amount { margin: 0; font-size: 32px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+.cat-table { width: 100%; border-collapse: collapse; }
+.cat-table thead tr { border-bottom: 1px solid var(--cc-border); }
+.cat-table th, .cat-table td { padding: 10px 16px; text-align: left; font-size: 14px; }
+.cat-table th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--cc-muted); }
+.cat-table tbody tr:not(:last-child) { border-bottom: 1px solid var(--cc-border); }
+.cat-table tbody tr:hover { background: rgba(0,0,0,.02); }
+
+.col-name   { min-width: 140px; }
+.col-bar    { width: 100%; }
+.col-pct    { min-width: 52px; text-align: right; color: var(--cc-muted); font-size: 12px; white-space: nowrap; }
+.col-amount { min-width: 100px; text-align: right; white-space: nowrap; }
+
+.pct-track { height: 6px; background: var(--cc-danger-soft); border-radius: 99px; overflow: hidden; }
+.pct-fill  { height: 100%; background: var(--cc-danger); border-radius: 99px; transition: width .3s; }
+
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 600px) { .metrics-grid { grid-template-columns: 1fr; } }
+
+.metric-card { text-align: center; }
+.metric-label { margin: 0 0 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--cc-muted); }
+.metric-value { margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+.cat-summary-list { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.cat-summary-row  { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+.cat-summary-name { color: var(--cc-text); }

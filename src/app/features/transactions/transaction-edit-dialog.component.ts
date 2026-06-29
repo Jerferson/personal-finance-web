@@ -15,42 +15,8 @@ export interface TransactionEditDialogData {
   selector: 'app-transaction-edit-dialog',
   standalone: true,
   imports: [ReactiveFormsModule],
-  template: `
-    <div class="modal-header">
-      <h5 class="modal-title">Edit Transaction</h5>
-      <button type="button" class="btn-close" (click)="dialogRef.close(false)"></button>
-    </div>
-
-    <div class="modal-body">
-      <form [formGroup]="fg" (ngSubmit)="submit()">
-        <div class="mb-3">
-          <label class="form-label">Description</label>
-          <input class="form-control" formControlName="description" autocomplete="off"
-            [class.is-invalid]="fg.controls.description.invalid && fg.controls.description.touched" />
-          <div class="invalid-feedback">Description is required</div>
-        </div>
-
-        <div class="mb-2">
-          <label class="form-label">Project <span class="text-muted">(optional)</span></label>
-          <select class="form-select" formControlName="projectId">
-            <option value="">— None —</option>
-            @for (p of projects(); track p.id) {
-              <option [value]="p.id">{{ p.name }}</option>
-            }
-          </select>
-        </div>
-      </form>
-    </div>
-
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="dialogRef.close(false)">Cancel</button>
-      <button type="button" class="btn btn-primary" [disabled]="fg.invalid || submitting()" (click)="submit()">
-        @if (submitting()) { <span class="spinner-border spinner-border-sm me-1"></span> }
-        Save
-      </button>
-    </div>
-  `,
-  styles: [`.modal-body { min-width: 360px; }`],
+  templateUrl: './transaction-edit-dialog.component.html',
+  styleUrl: './transaction-edit-dialog.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransactionEditDialogComponent {

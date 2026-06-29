@@ -1,0 +1,18 @@
+.audit-badge {
+  display: inline-flex; align-items: center; padding: 2px 10px;
+  border-radius: 99px; font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  background: var(--cc-primary-soft); color: var(--cc-primary);
+}
+.filter-row  { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filter-field { min-width: 130px; flex: 1; }
+
+.desc-cell { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ref-cell  { font-family: monospace; font-size: 12px; color: var(--cc-muted); }
+.actions-cell { display: flex; gap: 4px; justify-content: flex-end; padding: 4px 16px; min-width: 56px; }
+.voided-row td { opacity: 0.45; }
+
+.chip-transaction  { background: #e0e7ff; color: #3730a3; }
+.chip-scheduled    { background: var(--cc-warning-soft); color: var(--cc-warning); }
+.chip-transfer     { background: #f3e8ff; color: #7e22ce; }
+.chip-manual       { background: #f3f4f6; color: #374151; }
+.chip-seed         { background: #f3f4f6; color: #9ca3af; }

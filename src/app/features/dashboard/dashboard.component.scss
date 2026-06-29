@@ -1,0 +1,49 @@
+.dash-header { display: flex; align-items: flex-start; justify-content: space-between; }
+.dash-eyebrow {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.18em; color: var(--cc-primary); margin: 0 0 6px;
+}
+.dash-title  {
+  margin: 0; font-family: var(--cc-display-font); font-size: 28px;
+  font-weight: 800; letter-spacing: -0.03em; color: var(--cc-text);
+}
+.dash-subtitle { margin: 4px 0 0; color: var(--cc-muted); font-size: 14px; }
+
+.accounts-scroll {
+  display: flex; gap: 14px; overflow-x: auto; padding-bottom: 4px;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+.balance-card {
+  flex-shrink: 0; min-width: 190px; text-decoration: none; display: block;
+}
+.acct-type-chip { margin-bottom: 10px; }
+.acct-name  { margin: 0 0 4px; font-size: 12px; font-weight: 500; color: var(--cc-muted); }
+.acct-balance {
+  margin: 0; font-family: var(--cc-display-font); font-size: 24px; font-weight: 800;
+  letter-spacing: -0.03em; font-variant-numeric: tabular-nums;
+}
+.acct-balance.positive { color: var(--cc-success); }
+.acct-balance.negative { color: var(--cc-danger); }
+.acct-balance.muted    { color: var(--cc-muted); }
+
+.cc-chip-checking { background: #e0e7ff; color: #3730a3; }
+.cc-chip-savings  { background: #d1fae5; color: #065f46; }
+.cc-chip-cash     { background: #fef3c7; color: #92400e; }
+
+.insight-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 768px) { .insight-grid { grid-template-columns: 1fr; } }
+
+.metrics-row { display: flex; align-items: stretch; margin-top: 16px; }
+.metric { flex: 1; text-align: center; padding: 4px 8px; }
+.metric-divider { width: 1px; background: var(--cc-border); }
+.metric-label { margin: 0 0 6px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--cc-muted); }
+.metric-value {
+  margin: 0; font-family: var(--cc-display-font); font-size: 20px;
+  font-weight: 700; letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
+}
+
+.desc-cell { max-width: 280px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.table-card { padding: 0; overflow: hidden; }
+.table-card-header { padding: 16px 20px 0; }

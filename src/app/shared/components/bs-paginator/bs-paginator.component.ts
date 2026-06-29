@@ -17,45 +17,8 @@ export interface PageEvent {
   selector: 'app-bs-paginator',
   standalone: true,
   imports: [FormsModule],
-  template: `
-    <div class="d-flex align-items-center justify-content-between py-2 px-3 border-top">
-      <div class="d-flex align-items-center gap-2 text-muted small">
-        <span>Rows per page:</span>
-        <select class="form-select form-select-sm" style="width:72px"
-          [ngModel]="pageSize()"
-          (ngModelChange)="onSizeChange($event)">
-          @for (opt of pageSizeOptions(); track opt) {
-            <option [value]="opt">{{ opt }}</option>
-          }
-        </select>
-        <span>{{ rangeLabel() }}</span>
-      </div>
-
-      <nav aria-label="Pagination">
-        <ul class="pagination pagination-sm mb-0">
-          <li class="page-item" [class.disabled]="pageIndex() === 0">
-            <button class="page-link" (click)="prev()" [disabled]="pageIndex() === 0">
-              <i class="bi bi-chevron-left"></i>
-            </button>
-          </li>
-          @for (p of pageNumbers(); track $index) {
-            @if (p === -1) {
-              <li class="page-item disabled"><span class="page-link">…</span></li>
-            } @else {
-              <li class="page-item" [class.active]="p === pageIndex()">
-                <button class="page-link" (click)="goTo(p)">{{ p + 1 }}</button>
-              </li>
-            }
-          }
-          <li class="page-item" [class.disabled]="pageIndex() >= totalPages() - 1">
-            <button class="page-link" (click)="next()" [disabled]="pageIndex() >= totalPages() - 1">
-              <i class="bi bi-chevron-right"></i>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  `,
+  templateUrl: './bs-paginator.component.html',
+  styleUrl: './bs-paginator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BsPaginatorComponent {

@@ -1,0 +1,10 @@
+.form-card { max-width: 560px; }
+.transfer-form { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+.account-row { display: flex; align-items: flex-end; gap: 12px; }
+.transfer-arrow { font-size: 20px; color: var(--cc-muted); flex-shrink: 0; padding-bottom: 8px; }
+.same-account-error { color: var(--cc-danger); font-size: 12px; margin: 0; }
+
+.hint-box { display: flex; gap: 10px; align-items: flex-start; padding: 12px;
+  background: var(--cc-primary-soft); border-radius: 8px; }
+.hint-icon { color: var(--cc-primary); font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.hint-text { font-size: 13px; color: var(--cc-primary-deep); line-height: 1.5; }

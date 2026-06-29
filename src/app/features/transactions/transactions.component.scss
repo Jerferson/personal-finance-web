@@ -1,0 +1,5 @@
+.filter-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filter-field { min-width: 130px; flex: 1; }
+.desc-cell { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.actions-cell { display: flex; gap: 4px; justify-content: flex-end; padding: 4px 16px; min-width: 80px; }
+.voided-row td { opacity: 0.5; }

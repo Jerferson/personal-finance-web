@@ -1,0 +1,162 @@
+<div class="cc-page">
+
+  <!-- Header -->
+  <div class="dash-header">
+    <div>
+      <p class="dash-eyebrow">Financial Overview</p>
+      <h2 class="dash-title">Dashboard</h2>
+      <p class="dash-subtitle">{{ monthLabel }}</p>
+    </div>
+  </div>
+
+  <!-- Account balance cards -->
+  <div>
+    <p class="cc-section-title">Account Balances</p>
+    @if (accountBalances().length === 0) {
+      <div class="cc-card">
+        <app-empty-state icon="bi-bank" title="No accounts yet"
+          subtitle="Create your first account to track balances" />
+        <div class="text-center pb-3">
+          <a class="btn btn-primary btn-sm" routerLink="/accounts">Go to Accounts</a>
+        </div>
+      </div>
+    } @else {
+      <div class="accounts-scroll">
+        @for (item of accountBalances(); track item.account.id) {
+          <a class="balance-card cc-card" [routerLink]="['/accounts', item.account.id]">
+            <span class="cc-chip acct-type-chip" [class]="typeChipClass(item.account.type)">
+              {{ typeLabel(item.account.type) }}
+            </span>
+            <p class="acct-name">{{ item.account.name }}</p>
+            @if (item.balance) {
+              <p class="acct-balance"
+                [class.positive]="isPositive(item.balance.balance)"
+                [class.negative]="!isPositive(item.balance.balance)">
+                {{ item.balance.balance | financialAmount }}
+              </p>
+            } @else {
+              <p class="acct-balance muted">—</p>
+            }
+          </a>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Summary + Projection -->
+  <div class="insight-grid">
+
+    <!-- Monthly summary -->
+    <div class="cc-card">
+      <p class="cc-section-title">Monthly Summary</p>
+      @if (monthlySummary(); as s) {
+        <div class="metrics-row">
+          <div class="metric">
+            <p class="metric-label">Income</p>
+            <p class="metric-value cc-amount-income">{{ s.totalIncome | financialAmount }}</p>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <p class="metric-label">Expenses</p>
+            <p class="metric-value cc-amount-expense">{{ s.totalExpense | financialAmount }}</p>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <p class="metric-label">Net</p>
+            <p class="metric-value"
+              [class.cc-amount-income]="isPositive(s.netAmount)"
+              [class.cc-amount-expense]="!isPositive(s.netAmount)">
+              {{ s.netAmount | financialAmount }}
+            </p>
+          </div>
+        </div>
+      } @else {
+        <p class="text-muted mt-3 mb-2">No data for this month yet.</p>
+      }
+      <a class="btn btn-link ps-0 mt-1" routerLink="/reports">
+        <i class="bi bi-arrow-right"></i> View reports
+      </a>
+    </div>
+
+    <!-- Budget projection -->
+    <div class="cc-card">
+      <p class="cc-section-title">Projection — end of month</p>
+      @if (projection(); as p) {
+        <div class="metrics-row">
+          <div class="metric">
+            <p class="metric-label">Current</p>
+            <p class="metric-value">{{ p.currentBalance | financialAmount }}</p>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <p class="metric-label">In</p>
+            <p class="metric-value cc-amount-income">{{ p.scheduledIncome | financialAmount }}</p>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <p class="metric-label">Out</p>
+            <p class="metric-value cc-amount-expense">{{ p.scheduledExpenses | financialAmount }}</p>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric">
+            <p class="metric-label">Projected</p>
+            <p class="metric-value"
+              [class.cc-amount-income]="isPositive(p.projectedBalance)"
+              [class.cc-amount-expense]="!isPositive(p.projectedBalance)">
+              {{ p.projectedBalance | financialAmount }}
+            </p>
+          </div>
+        </div>
+      } @else {
+        <p class="text-muted mt-3 mb-2">No scheduled bills found.</p>
+      }
+      <a class="btn btn-link ps-0 mt-1" routerLink="/scheduled-bills">
+        <i class="bi bi-arrow-right"></i> View scheduled bills
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Recent transactions -->
+  <div class="cc-card table-card">
+    <div class="cc-row table-card-header">
+      <p class="cc-section-title cc-grow" style="margin:0">Recent Transactions</p>
+      <a class="btn btn-link btn-sm" routerLink="/transactions">View all</a>
+    </div>
+
+    @if (recentTxns().length === 0) {
+      <app-empty-state icon="bi-receipt" title="No transactions yet"
+        subtitle="Create a transaction to start tracking your finances" />
+    } @else {
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th class="text-end">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of recentTxns(); track row.id) {
+              <tr>
+                <td>{{ row.transactionDate | date:'MMM d' }}</td>
+                <td class="desc-cell">{{ row.description }}</td>
+                <td><span class="cc-chip" [class]="'cc-chip-' + row.type.toLowerCase()">{{ row.type }}</span></td>
+                <td class="text-end">
+                  <span class="cc-amount"
+                    [class.cc-amount-income]="row.type === 'INCOME'"
+                    [class.cc-amount-expense]="row.type === 'EXPENSE'">
+                    {{ row.amount | financialAmount }}
+                  </span>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+</div>

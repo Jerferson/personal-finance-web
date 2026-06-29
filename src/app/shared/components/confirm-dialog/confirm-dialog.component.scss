@@ -1,0 +1,12 @@
+.confirm-title-row {
+  display: flex; align-items: center; gap: 12px;
+}
+.confirm-icon-wrap {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.icon-danger  { background: var(--cc-danger-soft);  color: var(--cc-danger); }
+.icon-primary { background: var(--cc-primary-soft); color: var(--cc-primary); }
+.icon-warning { background: var(--cc-warning-soft); color: var(--cc-warning); }
+.confirm-message { font-size: 14px; }

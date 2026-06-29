@@ -1,0 +1,56 @@
+<div class="cc-page">
+  <div class="cc-row">
+    <h2 class="cc-grow" style="margin:0">Projects</h2>
+    <button class="btn btn-primary btn-sm" (click)="openForm()">
+      <i class="bi bi-plus-lg"></i> New Project
+    </button>
+  </div>
+
+  <div class="cc-card" style="padding:0; overflow:hidden">
+    @if (projects().length === 0) {
+      <app-empty-state icon="bi-folder" title="No projects yet"
+        subtitle="Track expenses by project to see spending breakdowns" />
+    } @else {
+      <div class="table-responsive">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Start</th>
+              <th>End</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of projects(); track row.id) {
+              <tr>
+                <td>
+                  <span class="project-name">{{ row.name }}</span>
+                  @if (row.description) {
+                    <span class="project-desc">{{ row.description }}</span>
+                  }
+                </td>
+                <td>{{ row.startDate ? (row.startDate | date:'mediumDate') : '—' }}</td>
+                <td>
+                  @if (row.endDate) {
+                    {{ row.endDate | date:'mediumDate' }}
+                  } @else {
+                    <span class="ongoing">Ongoing</span>
+                  }
+                </td>
+                <td class="actions-cell">
+                  <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openForm(row)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="delete(row)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

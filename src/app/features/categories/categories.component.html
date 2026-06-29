@@ -1,0 +1,61 @@
+<div class="cc-page">
+  <div class="cc-row">
+    <h2 class="cc-grow" style="margin:0">Categories</h2>
+    <button class="btn btn-primary btn-sm" (click)="openForm()">
+      <i class="bi bi-plus-lg"></i> New Category
+    </button>
+  </div>
+
+  @if (income().length > 0) {
+    <div class="cc-card" style="padding:0; overflow:hidden">
+      <div style="padding:16px 20px 0">
+        <p class="cc-section-title">Income</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        @for (cat of income(); track cat.id) {
+          <li class="list-group-item d-flex align-items-center gap-2 px-4">
+            <i class="bi bi-graph-up-arrow income-icon"></i>
+            <span class="flex-grow-1">{{ cat.name }}</span>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openForm(cat)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="delete(cat)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (expense().length > 0) {
+    <div class="cc-card" style="padding:0; overflow:hidden">
+      <div style="padding:16px 20px 0">
+        <p class="cc-section-title">Expenses</p>
+      </div>
+      <ul class="list-group list-group-flush">
+        @for (cat of expense(); track cat.id) {
+          <li class="list-group-item d-flex align-items-center gap-2 px-4">
+            <i class="bi bi-graph-down-arrow expense-icon"></i>
+            <span class="flex-grow-1">{{ cat.name }}</span>
+            <div class="d-flex gap-1">
+              <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openForm(cat)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="delete(cat)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+
+  @if (categories().length === 0) {
+    <app-empty-state icon="bi-tag" title="No categories yet"
+      subtitle="Create income and expense categories to organize your transactions" />
+  }
+</div>
