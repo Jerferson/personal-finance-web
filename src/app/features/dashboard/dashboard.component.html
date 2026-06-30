@@ -5,7 +5,7 @@
     <div>
       <p class="dash-eyebrow">Financial Overview</p>
       <h2 class="dash-title">Dashboard</h2>
-      <p class="dash-subtitle">{{ monthLabel }}</p>
+      <p class="dash-subtitle">{{ summaryLabel }}</p>
     </div>
   </div>
 
@@ -79,13 +79,25 @@
     </div>
 
     <!-- Budget projection -->
-    <div class="cc-card">
-      <p class="cc-section-title">Projection — end of month</p>
-      @if (projection(); as p) {
+    <div class="cc-card projection-card">
+      <div class="projection-header">
+        <p class="cc-section-title" style="margin:0">Projection</p>
+        <div class="month-nav">
+          <button class="month-nav-btn" (click)="prevMonth()" [disabled]="!canGoPrev()" aria-label="Previous month">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <span class="month-nav-label">{{ projectionLabel() }}</span>
+          <button class="month-nav-btn" (click)="nextMonth()" [disabled]="!canGoNext()" aria-label="Next month">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      @if (projectionMonth(); as p) {
         <div class="metrics-row">
           <div class="metric">
-            <p class="metric-label">Current</p>
-            <p class="metric-value">{{ p.currentBalance | financialAmount }}</p>
+            <p class="metric-label">Starting</p>
+            <p class="metric-value">{{ p.startingBalance | financialAmount }}</p>
           </div>
           <div class="metric-divider"></div>
           <div class="metric">
@@ -99,16 +111,16 @@
           </div>
           <div class="metric-divider"></div>
           <div class="metric">
-            <p class="metric-label">Projected</p>
+            <p class="metric-label">End</p>
             <p class="metric-value"
-              [class.cc-amount-income]="isPositive(p.projectedBalance)"
-              [class.cc-amount-expense]="!isPositive(p.projectedBalance)">
-              {{ p.projectedBalance | financialAmount }}
+              [class.cc-amount-income]="isPositive(p.projectedEndBalance)"
+              [class.cc-amount-expense]="!isPositive(p.projectedEndBalance)">
+              {{ p.projectedEndBalance | financialAmount }}
             </p>
           </div>
         </div>
       } @else {
-        <p class="text-muted mt-3 mb-2">No scheduled bills found.</p>
+        <p class="text-muted mt-3 mb-2">Loading projection…</p>
       }
       <a class="btn btn-link ps-0 mt-1" routerLink="/scheduled-bills">
         <i class="bi bi-arrow-right"></i> View scheduled bills

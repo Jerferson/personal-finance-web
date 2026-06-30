@@ -47,3 +47,50 @@
 
 .table-card { padding: 0; overflow: hidden; }
 .table-card-header { padding: 16px 20px 0; }
+
+/* Projection card month nav */
+.projection-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.month-nav-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cc-text);
+  min-width: 120px;
+  text-align: center;
+}
+
+.month-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--cc-border);
+  background: var(--cc-bg);
+  color: var(--cc-text);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-size: 12px;
+
+  &:hover:not(:disabled) {
+    background: var(--cc-bg-soft);
+    border-color: var(--cc-primary-soft);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+}

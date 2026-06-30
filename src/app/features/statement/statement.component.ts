@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   computed,
   ElementRef,
   inject,
@@ -10,10 +11,12 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { StatementEntry, DayGroup } from '../../core/models/statement.model';
 import { StatementService } from '../../core/services/statement.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { RefreshService } from '../../core/services/refresh.service';
 import { DialogService } from '../../shared/services/dialog.service';
 import { TransactionService } from '../../core/services/transaction.service';
 import { ScheduledBillService } from '../../core/services/scheduled-bill.service';
@@ -82,6 +85,8 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
   private readonly scheduledBillService = inject(ScheduledBillService);
   private readonly dialog              = inject(DialogService);
   private readonly notify              = inject(NotificationService);
+  private readonly refreshService      = inject(RefreshService);
+  private readonly destroyRef          = inject(DestroyRef);
   private readonly zone                = inject(NgZone);
 
   readonly futureEntries  = signal<StatementEntry[]>([]);
@@ -100,6 +105,7 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
 
   constructor() {
     this.loadInitial();
+    this.refreshService.refresh$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.loadInitial());
   }
 
   ngAfterViewInit(): void {

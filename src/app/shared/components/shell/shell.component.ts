@@ -4,6 +4,7 @@ import { LoadingComponent } from '../loading/loading.component';
 import { ToastContainerComponent } from '../toast/toast-container.component';
 import { DialogService } from '../../services/dialog.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { RefreshService } from '../../../core/services/refresh.service';
 import { TransactionCreateDialogComponent, TransactionCreateDialogData } from '../../../features/transactions/transaction-create-dialog.component';
 import { ScheduledBillFormDialogComponent, ScheduledBillFormDialogData } from '../../../features/scheduled-bills/scheduled-bill-form-dialog.component';
 import { TransferFormDialogComponent } from '../../../features/transfers/transfer-form-dialog.component';
@@ -23,8 +24,9 @@ interface NavItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent {
-  private readonly dialog = inject(DialogService);
-  private readonly notify = inject(NotificationService);
+  private readonly dialog   = inject(DialogService);
+  private readonly notify   = inject(NotificationService);
+  private readonly refresh  = inject(RefreshService);
 
   readonly fabOpen = signal(false);
 
@@ -54,7 +56,9 @@ export class ShellComponent {
       TransactionCreateDialogComponent,
       { data: {}, width: '480px' },
     );
-    ref.afterClosed().subscribe((ok: boolean | undefined) => { if (ok) this.notify.success('Transaction created'); });
+    ref.afterClosed().subscribe((ok: boolean | undefined) => {
+      if (ok) { this.notify.success('Transaction created'); this.refresh.emit(); }
+    });
   }
 
   openScheduledBill(): void {
@@ -63,11 +67,16 @@ export class ShellComponent {
       ScheduledBillFormDialogComponent,
       { data: {}, width: '480px' },
     );
-    ref.afterClosed().subscribe((ok: boolean | undefined) => { if (ok) this.notify.success('Scheduled bill created'); });
+    ref.afterClosed().subscribe((ok: boolean | undefined) => {
+      if (ok) { this.notify.success('Scheduled bill created'); this.refresh.emit(); }
+    });
   }
 
   openTransfer(): void {
     this.fabOpen.set(false);
-    this.dialog.open<boolean>(TransferFormDialogComponent, { width: '480px' });
+    const ref = this.dialog.open<boolean>(TransferFormDialogComponent, { width: '480px' });
+    ref.afterClosed().subscribe((ok: boolean | undefined) => {
+      if (ok) { this.notify.success('Transfer created'); this.refresh.emit(); }
+    });
   }
 }

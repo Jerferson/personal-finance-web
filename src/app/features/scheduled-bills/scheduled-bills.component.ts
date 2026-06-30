@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DatePipe } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { forkJoin } from 'rxjs';
@@ -10,6 +11,7 @@ import { AccountService } from '../../core/services/account.service';
 import { CategoryService } from '../../core/services/category.service';
 import { ScheduledBillService } from '../../core/services/scheduled-bill.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { RefreshService } from '../../core/services/refresh.service';
 import { DialogService } from '../../shared/services/dialog.service';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
@@ -30,6 +32,8 @@ export class ScheduledBillsComponent {
   private readonly categoryService = inject(CategoryService);
   private readonly dialog = inject(DialogService);
   private readonly notify = inject(NotificationService);
+  private readonly refreshService = inject(RefreshService);
+  private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
 
   readonly bills = signal<ScheduledBill[]>([]);
@@ -51,6 +55,7 @@ export class ScheduledBillsComponent {
       this.load();
     });
     this.filterFg.valueChanges.subscribe(() => this.load());
+    this.refreshService.refresh$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => this.load());
   }
 
   private load() {
