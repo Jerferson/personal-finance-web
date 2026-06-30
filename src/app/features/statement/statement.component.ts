@@ -194,7 +194,7 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
 
   postScheduledBill(entry: StatementEntry): void {
     if (!entry.scheduledBillId) return;
-    this.scheduledBillService.post(entry.scheduledBillId, crypto.randomUUID()).subscribe(() => {
+    this.scheduledBillService.post(entry.scheduledBillId).subscribe(() => {
       this.notify.success('Bill posted as transaction');
       this.loadInitial();
     });
@@ -212,7 +212,7 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
     });
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.scheduledBillService.cancel(entry.scheduledBillId!, crypto.randomUUID()).subscribe(() => {
+        this.scheduledBillService.cancel(entry.scheduledBillId!).subscribe(() => {
           this.notify.success('Scheduled bill cancelled');
           this.loadInitial();
         });

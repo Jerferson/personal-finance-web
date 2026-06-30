@@ -89,7 +89,7 @@ export class ScheduledBillsComponent {
     });
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.scheduledBillService.post(bill.id, crypto.randomUUID()).subscribe(() => {
+        this.scheduledBillService.post(bill.id).subscribe(() => {
           this.notify.success('Bill posted — transaction created');
           this.load();
         });
@@ -107,7 +107,7 @@ export class ScheduledBillsComponent {
     });
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.scheduledBillService.cancel(bill.id, crypto.randomUUID()).subscribe(() => {
+        this.scheduledBillService.cancel(bill.id).subscribe(() => {
           this.notify.success('Scheduled bill cancelled');
           this.load();
         });

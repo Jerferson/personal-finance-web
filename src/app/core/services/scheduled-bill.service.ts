@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import {
@@ -36,16 +36,12 @@ export class ScheduledBillService {
     return this.http.patch<ScheduledBill>(`/scheduled-bills/${id}`, dto);
   }
 
-  post(id: string, idempotencyKey: string): Observable<ScheduledBill> {
-    return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/post`, {}, {
-      headers: new HttpHeaders({ 'Idempotency-Key': idempotencyKey }),
-    });
+  post(id: string): Observable<ScheduledBill> {
+    return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/post`, {});
   }
 
-  cancel(id: string, idempotencyKey: string): Observable<ScheduledBill> {
-    return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/cancel`, {}, {
-      headers: new HttpHeaders({ 'Idempotency-Key': idempotencyKey }),
-    });
+  cancel(id: string): Observable<ScheduledBill> {
+    return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/cancel`, {});
   }
 
   delete(id: string): Observable<void> {
