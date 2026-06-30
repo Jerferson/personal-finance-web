@@ -27,6 +27,5 @@ export class ShellComponent {
     { label: 'Scheduled Bills',icon: 'bi-calendar-check',  route: '/scheduled-bills' },
     { label: 'Transfers',      icon: 'bi-arrow-left-right',route: '/transfers' },
     { label: 'Reports',        icon: 'bi-bar-chart',       route: '/reports' },
-    { label: 'Journal Entries',icon: 'bi-journal-text',    route: '/journal-entries' },
   ];
 }

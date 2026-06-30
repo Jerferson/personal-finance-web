@@ -52,11 +52,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/reports/reports.component').then(m => m.ReportsComponent),
       },
-      {
-        path: 'journal-entries',
-        loadComponent: () =>
-          import('./features/journal-entries/journal-entries.component').then(m => m.JournalEntriesComponent),
-      },
     ],
   },
   { path: '**', redirectTo: 'dashboard' },
