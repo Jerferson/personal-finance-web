@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <!-- Account balance cards -->
+  <!-- Account balances -->
   <div>
     <p class="cc-section-title">Account Balances</p>
     @if (accountBalances().length === 0) {
@@ -21,24 +21,39 @@
         </div>
       </div>
     } @else {
-      <div class="accounts-scroll">
-        @for (item of accountBalances(); track item.account.id) {
-          <a class="balance-card cc-card" [routerLink]="['/accounts', item.account.id]">
-            <span class="cc-chip acct-type-chip" [class]="typeChipClass(item.account.type)">
-              {{ typeLabel(item.account.type) }}
-            </span>
-            <p class="acct-name">{{ item.account.name }}</p>
-            @if (item.balance) {
-              <p class="acct-balance"
-                [class.positive]="isPositive(item.balance.balance)"
-                [class.negative]="!isPositive(item.balance.balance)">
-                {{ item.balance.balance | financialAmount }}
-              </p>
-            } @else {
-              <p class="acct-balance muted">—</p>
-            }
-          </a>
-        }
+      <div class="cc-card acct-panel">
+        <!-- Total summary -->
+        <div class="acct-panel-summary">
+          <p class="acct-summary-label">Total Available</p>
+          <p class="acct-summary-total"
+            [class.positive]="isPositive(totalBalance())"
+            [class.negative]="!isPositive(totalBalance())">
+            {{ totalBalance() | financialAmount }}
+          </p>
+          <p class="acct-summary-count">
+            {{ accountBalances().length }} account{{ accountBalances().length === 1 ? '' : 's' }}
+          </p>
+        </div>
+        <!-- Individual account cards -->
+        <div class="acct-cards-row">
+          @for (item of accountBalances(); track item.account.id) {
+            <a class="acct-card" [routerLink]="['/accounts', item.account.id]">
+              <span class="cc-chip" [class]="typeChipClass(item.account.type)">
+                {{ typeLabel(item.account.type) }}
+              </span>
+              <p class="acct-card-name">{{ item.account.name }}</p>
+              @if (item.balance) {
+                <p class="acct-card-balance"
+                  [class.positive]="isPositive(item.balance.balance)"
+                  [class.negative]="!isPositive(item.balance.balance)">
+                  {{ item.balance.balance | financialAmount }}
+                </p>
+              } @else {
+                <p class="acct-card-balance muted">—</p>
+              }
+            </a>
+          }
+        </div>
       </div>
     }
   </div>

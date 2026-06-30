@@ -71,6 +71,12 @@ export class DashboardComponent {
     return monthLabel(cf.months[this.projectionIndex()]?.month ?? this.currentMonth);
   });
 
+  readonly totalBalance = computed(() =>
+    this.accountBalances()
+      .reduce((sum, item) => sum + parseFloat(item.balance?.balance ?? '0'), 0)
+      .toFixed(2),
+  );
+
   readonly canGoPrev = computed(() => this.projectionIndex() > 0);
   readonly canGoNext = computed(() => {
     const cf = this.cashflow();
