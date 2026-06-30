@@ -118,3 +118,30 @@
     </a>
   }
 </nav>
+
+<!-- FAB backdrop -->
+@if (fabOpen()) {
+  <div class="fab-backdrop" (click)="closeFab()"></div>
+}
+
+<!-- FAB speed-dial -->
+<div class="fab-container" [class.fab-open]="fabOpen()">
+  <div class="fab-actions">
+    <button class="fab-action" (click)="openTransaction()" title="Transaction">
+      <i class="bi bi-receipt"></i>
+      <span class="fab-action-label">Transaction</span>
+    </button>
+    <button class="fab-action" (click)="openScheduledBill()" title="Scheduled Bill">
+      <i class="bi bi-calendar-check"></i>
+      <span class="fab-action-label">Scheduled Bill</span>
+    </button>
+    <button class="fab-action" (click)="openTransfer()" title="Transfer">
+      <i class="bi bi-arrow-left-right"></i>
+      <span class="fab-action-label">Transfer</span>
+    </button>
+  </div>
+
+  <button class="fab-main" (click)="toggleFab()" [attr.aria-expanded]="fabOpen()" aria-label="Add transaction">
+    <i class="bi bi-plus fab-plus"></i>
+  </button>
+</div>

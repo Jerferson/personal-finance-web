@@ -523,3 +523,110 @@ input, select, textarea { font-size: max(16px, 1em); }
   50%  { opacity: 0.5; }
   100% { opacity: 1; }
 }
+
+/* ── FAB speed-dial (global — bypasses component encapsulation) ── */
+.fab-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 500 !important;
+}
+
+.fab-container {
+  position: fixed !important;
+  bottom: 28px !important;
+  right: 28px !important;
+  z-index: 501 !important;
+  width: 56px;
+  height: 56px;
+}
+
+@media (max-width: 767px) {
+  .fab-container {
+    bottom: 80px !important;
+  }
+}
+
+.fab-main {
+  position: relative;
+  z-index: 1;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  border: none !important;
+  background: #ea580c !important;
+  color: #fff !important;
+  box-shadow: 0 4px 16px rgba(234, 88, 12, 0.45);
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: box-shadow 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    background: #d0580a !important;
+    box-shadow: 0 6px 20px rgba(234, 88, 12, 0.55);
+  }
+}
+
+.fab-main .fab-plus {
+  font-size: 26px;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+}
+
+.fab-container.fab-open .fab-main .fab-plus {
+  transform: rotate(45deg);
+}
+
+.fab-actions {
+  position: absolute !important;
+  bottom: 68px !important;
+  right: 0 !important;
+  display: flex !important;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.fab-container.fab-open .fab-actions {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.fab-action {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px 0 12px;
+  height: 40px;
+  border-radius: 20px !important;
+  border: none !important;
+  background: #fff !important;
+  color: #1a1612 !important;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer !important;
+  white-space: nowrap;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+
+  i {
+    font-size: 16px;
+    color: #ea580c;
+  }
+
+  &:hover {
+    background: #fef4ee !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+}
+
+.fab-action-label {
+  display: inline;
+}
