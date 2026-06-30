@@ -22,12 +22,6 @@
         <option value="EXPENSE">Expense</option>
       </select>
 
-      <select class="form-select form-select-sm filter-field" formControlName="status">
-        <option value="">All statuses</option>
-        <option value="POSTED">Posted</option>
-        <option value="VOIDED">Voided</option>
-      </select>
-
       <input class="form-control form-control-sm filter-field" type="date"
         formControlName="startDate" placeholder="From" />
 
@@ -55,20 +49,18 @@
               <th>Account</th>
               <th>Category</th>
               <th>Type</th>
-              <th>Status</th>
               <th class="text-end">Amount</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             @for (row of transactions(); track row.id) {
-              <tr [class.voided-row]="row.status === 'VOIDED'">
+              <tr>
                 <td class="date-cell">{{ row.transactionDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td>{{ accountMap().get(row.accountId)?.name ?? '—' }}</td>
                 <td>{{ categoryMap().get(row.categoryId)?.name ?? '—' }}</td>
                 <td><span class="cc-chip" [class]="'cc-chip-' + row.type.toLowerCase()">{{ row.type }}</span></td>
-                <td><span class="cc-chip" [class]="'cc-chip-' + row.status.toLowerCase()">{{ row.status }}</span></td>
                 <td class="text-end">
                   <span class="cc-amount"
                     [class.cc-amount-income]="row.type === 'INCOME'"
@@ -77,14 +69,12 @@
                   </span>
                 </td>
                 <td class="actions-cell">
-                  @if (row.status === 'POSTED') {
-                    <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openEdit(row)">
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-danger" title="Void" (click)="voidTransaction(row)">
-                      <i class="bi bi-slash-circle"></i>
-                    </button>
-                  }
+                  <button class="btn btn-sm btn-outline-secondary" title="Edit" (click)="openEdit(row)">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteTransaction(row)">
+                    <i class="bi bi-trash"></i>
+                  </button>
                 </td>
               </tr>
             }

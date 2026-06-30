@@ -36,9 +36,7 @@ export class TransactionService {
     return this.http.patch<Transaction>(`/transactions/${id}`, dto);
   }
 
-  void(id: string, idempotencyKey: string): Observable<Transaction> {
-    return this.http.post<Transaction>(`/transactions/${id}/void`, {}, {
-      headers: new HttpHeaders({ 'Idempotency-Key': idempotencyKey }),
-    });
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`/transactions/${id}`);
   }
 }

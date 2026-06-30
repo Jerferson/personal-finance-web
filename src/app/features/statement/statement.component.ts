@@ -172,20 +172,20 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
 
   // ── Actions ──────────────────────────────────────────────────────────────────
 
-  voidTransaction(entry: StatementEntry): void {
+  deleteTransaction(entry: StatementEntry): void {
     if (!entry.transactionId) return;
     const ref = this.dialog.open<boolean, ConfirmDialogData>(ConfirmDialogComponent, {
       data: {
-        title: 'Void Transaction',
-        message: `Void "${entry.description}"? This will reverse the journal entry and cannot be undone.`,
-        confirmLabel: 'Void',
+        title: 'Delete Transaction',
+        message: `Delete "${entry.description}"? This action cannot be undone.`,
+        confirmLabel: 'Delete',
       },
       width: '400px',
     });
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.transactionService.void(entry.transactionId!, crypto.randomUUID()).subscribe(() => {
-          this.notify.success('Transaction voided');
+        this.transactionService.delete(entry.transactionId!).subscribe(() => {
+          this.notify.success('Transaction deleted');
           this.loadInitial();
         });
       }

@@ -1,7 +1,7 @@
 import { CategoryType } from './category.model';
 
 export type TransactionType = CategoryType;
-export type TransactionStatus = 'POSTED' | 'VOIDED';
+export type TransactionStatus = 'POSTED';
 
 export interface Transaction {
   id: string;
@@ -38,7 +38,6 @@ export interface QueryTransactionParams {
   categoryId?: string;
   projectId?: string;
   type?: TransactionType;
-  status?: TransactionStatus;
   startDate?: string;
   endDate?: string;
   page?: number;

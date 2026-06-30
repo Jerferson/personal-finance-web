@@ -6,8 +6,14 @@ export interface CreateTransferDto {
   description: string;
 }
 
-export interface Transfer extends CreateTransferDto {
+export interface Transfer {
   id: string;
-  journalEntryId: string;
+  date: string;
+  description: string;
+  amount: string;
+  fromAccountId: string;
+  fromAccountName: string;
+  toAccountId: string;
+  toAccountName: string;
   createdAt: string;
 }

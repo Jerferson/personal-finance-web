@@ -59,7 +59,7 @@ export class TransactionsComponent {
   readonly categoryMap = computed(() => new Map(this.categories().map(c => [c.id, c])));
 
   readonly filterFg = this.fb.group({
-    accountId: [''], type: [''], status: [''], startDate: [''], endDate: [''],
+    accountId: [''], type: [''], startDate: [''], endDate: [''],
   });
 
   constructor() {
@@ -85,8 +85,7 @@ export class TransactionsComponent {
     const query: QueryTransactionParams = {
       page: this.pageIndex() + 1, limit: this.pageSize(),
       ...(f.accountId ? { accountId: f.accountId } : {}),
-      ...(f.type      ? { type:      f.type as 'INCOME' | 'EXPENSE' }  : {}),
-      ...(f.status    ? { status:    f.status as 'POSTED' | 'VOIDED' } : {}),
+      ...(f.type      ? { type:      f.type as 'INCOME' | 'EXPENSE' } : {}),
       ...(f.startDate ? { startDate: f.startDate } : {}),
       ...(f.endDate   ? { endDate:   f.endDate }   : {}),
     };
@@ -103,7 +102,7 @@ export class TransactionsComponent {
   }
 
   clearFilters() {
-    this.filterFg.reset({ accountId: '', type: '', status: '', startDate: '', endDate: '' });
+    this.filterFg.reset({ accountId: '', type: '', startDate: '', endDate: '' });
   }
 
   openCreate() {
@@ -127,22 +126,22 @@ export class TransactionsComponent {
     });
   }
 
-  voidTransaction(transaction: Transaction) {
+  deleteTransaction(transaction: Transaction) {
     const ref = this.dialog.open<boolean, ConfirmDialogData>(
       ConfirmDialogComponent,
       {
         data: {
-          title: 'Void Transaction',
-          message: `Void "${transaction.description}"? This will reverse the journal entry and cannot be undone.`,
-          confirmLabel: 'Void',
+          title: 'Delete Transaction',
+          message: `Delete "${transaction.description}"? This action cannot be undone.`,
+          confirmLabel: 'Delete',
         },
         width: '400px',
       },
     );
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.transactionService.void(transaction.id, crypto.randomUUID()).subscribe(() => {
-          this.notify.success('Transaction voided');
+        this.transactionService.delete(transaction.id).subscribe(() => {
+          this.notify.success('Transaction deleted');
           this.load();
         });
       }

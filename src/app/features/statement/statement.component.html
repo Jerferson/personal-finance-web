@@ -58,8 +58,7 @@
           <div class="day-entries">
             @for (entry of group.entries; track entry.id) {
               <div class="entry-row"
-                   [class.entry-scheduled]="entry.isScheduled"
-                   [class.entry-voided]="entry.status === 'VOIDED'">
+                   [class.entry-scheduled]="entry.isScheduled">
 
                 <!-- Icon -->
                 <div class="entry-icon" [class.icon-income]="entry.type === 'INCOME' && !entry.isScheduled"
@@ -109,9 +108,9 @@
                     <button class="btn-action btn-cancel" title="Cancel" (click)="cancelScheduledBill(entry)">
                       <i class="bi bi-x-lg"></i>
                     </button>
-                  } @else if (entry.status === 'POSTED' && entry.sourceType !== 'TRANSFER') {
-                    <button class="btn-action btn-void" title="Void" (click)="voidTransaction(entry)">
-                      <i class="bi bi-slash-circle"></i>
+                  } @else if (entry.sourceType !== 'TRANSFER') {
+                    <button class="btn-action btn-delete" title="Delete" (click)="deleteTransaction(entry)">
+                      <i class="bi bi-trash"></i>
                     </button>
                   }
                 </div>

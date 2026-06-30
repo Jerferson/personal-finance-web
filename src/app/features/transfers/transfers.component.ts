@@ -1,85 +1,54 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
-import { Account } from '../../core/models/account.model';
-import { CreateTransferDto } from '../../core/models/transfer.model';
-import { AccountService } from '../../core/services/account.service';
-import { NotificationService } from '../../core/services/notification.service';
+import { Transfer } from '../../core/models/transfer.model';
 import { TransferService } from '../../core/services/transfer.service';
-
-function differentAccounts(): ValidatorFn {
-  return (group: AbstractControl): ValidationErrors | null => {
-    const from = group.get('fromAccountId')?.value;
-    const to   = group.get('toAccountId')?.value;
-    return from && to && from === to ? { sameAccount: true } : null;
-  };
-}
-
-function todayIso(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-}
+import { NotificationService } from '../../core/services/notification.service';
+import { DialogService } from '../../shared/services/dialog.service';
+import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
+import { BsPaginatorComponent, PageEvent } from '../../shared/components/bs-paginator/bs-paginator.component';
+import { FinancialAmountPipe } from '../../shared/pipes/financial-amount.pipe';
+import { TransferFormDialogComponent } from './transfer-form-dialog.component';
 
 @Component({
   selector: 'app-transfers',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [DatePipe, FinancialAmountPipe, EmptyStateComponent, BsPaginatorComponent],
   templateUrl: './transfers.component.html',
   styleUrl: './transfers.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TransfersComponent {
-  private readonly fb = inject(FormBuilder);
   private readonly transferService = inject(TransferService);
-  private readonly accountService = inject(AccountService);
-  private readonly notify = inject(NotificationService);
+  private readonly dialog          = inject(DialogService);
+  private readonly notify          = inject(NotificationService);
 
-  readonly accounts = signal<Account[]>([]);
-  readonly submitting = signal(false);
-
-  readonly fg = this.fb.group(
-    {
-      fromAccountId: ['', [Validators.required]],
-      toAccountId:   ['', [Validators.required]],
-      amount:        [null as number | null, [Validators.required, Validators.min(0.01)]],
-      transferDate:  [todayIso(), [Validators.required]],
-      description:   ['', [Validators.required]],
-    },
-    { validators: differentAccounts() },
-  );
+  readonly transfers  = signal<Transfer[]>([]);
+  readonly total      = signal(0);
+  readonly pageIndex  = signal(0);
+  readonly pageSize   = signal(20);
 
   constructor() {
-    this.accountService.getAll(1, 100).subscribe(res => this.accounts.set(res.data));
+    this.load();
   }
 
-  submit() {
-    if (this.fg.invalid || this.submitting()) return;
-    this.submitting.set(true);
-    const v = this.fg.getRawValue();
-    const dto: CreateTransferDto = {
-      fromAccountId: v.fromAccountId!,
-      toAccountId:   v.toAccountId!,
-      amount:        Number(v.amount).toFixed(2),
-      transferDate:  v.transferDate!,
-      description:   v.description!,
-    };
-    this.transferService.create(dto, crypto.randomUUID()).subscribe({
-      next: () => {
-        this.submitting.set(false);
-        this.notify.success('Transfer completed successfully');
-        this.fg.reset({
-          fromAccountId: '', toAccountId: '', amount: null,
-          transferDate: todayIso(), description: '',
-        });
-      },
-      error: () => this.submitting.set(false),
+  private load(): void {
+    this.transferService.getAll(this.pageIndex() + 1, this.pageSize()).subscribe(res => {
+      this.transfers.set(res.data);
+      this.total.set(res.meta.total);
+    });
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.pageIndex.set(event.pageIndex);
+    this.pageSize.set(event.pageSize);
+    this.load();
+  }
+
+  openCreate(): void {
+    const ref = this.dialog.open<boolean>(TransferFormDialogComponent, { width: '480px' });
+    ref.afterClosed().subscribe(ok => {
+      if (ok) { this.notify.success('Transfer completed successfully'); this.load(); }
     });
   }
 }
