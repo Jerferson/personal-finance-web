@@ -1,0 +1,137 @@
+<div class="stmt-wrap">
+
+  <!-- Header -->
+  <div class="stmt-header">
+    <h2 class="stmt-title">Extrato</h2>
+    <div class="add-menu-host">
+      <button class="btn btn-primary btn-sm" (click)="toggleAddMenu()">
+        <i class="bi bi-plus-lg me-1"></i>Add
+      </button>
+      @if (showAddMenu()) {
+        <div class="add-menu-dropdown">
+          <button class="add-menu-item" (click)="openCreateTransaction()">
+            <i class="bi bi-receipt"></i>Transaction
+          </button>
+          <button class="add-menu-item" (click)="openCreateScheduledBill()">
+            <i class="bi bi-calendar-check"></i>Scheduled Bill
+          </button>
+          <button class="add-menu-item" (click)="openCreateTransfer()">
+            <i class="bi bi-arrow-left-right"></i>Transfer
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Top sentinel — loads more future on scroll up -->
+  <div #topSentinel class="sentinel">
+    @if (loadingFuture()) {
+      <span class="sentinel-spinner"><span class="spinner-border spinner-border-sm"></span> Loading…</span>
+    } @else if (!hasMoreFuture() && futureEntries().length > 0) {
+      <span class="sentinel-end">No more upcoming bills</span>
+    }
+  </div>
+
+  <!-- Empty state -->
+  @if (initialLoading()) {
+    <div class="stmt-loading">
+      <span class="spinner-border text-secondary"></span>
+    </div>
+  } @else if (!grouped().length) {
+    <div class="stmt-empty">
+      <i class="bi bi-inbox stmt-empty-icon"></i>
+      <p>No transactions yet. Use the Add button to get started.</p>
+    </div>
+  } @else {
+
+    <!-- Entry list grouped by day -->
+    <div class="stmt-list">
+      @for (group of grouped(); track group.dateKey) {
+
+        @if (group.showMonthHeader) {
+          <div class="month-header">{{ group.monthLabel }}</div>
+        }
+
+        <div class="day-group">
+          <div class="day-label">{{ group.dayLabel }}</div>
+
+          <div class="day-entries">
+            @for (entry of group.entries; track entry.id) {
+              <div class="entry-row"
+                   [class.entry-scheduled]="entry.isScheduled"
+                   [class.entry-voided]="entry.status === 'VOIDED'">
+
+                <!-- Icon -->
+                <div class="entry-icon" [class.icon-income]="entry.type === 'INCOME' && !entry.isScheduled"
+                                         [class.icon-expense]="entry.type === 'EXPENSE' && !entry.isScheduled"
+                                         [class.icon-transfer]="entry.sourceType === 'TRANSFER'"
+                                         [class.icon-scheduled]="entry.isScheduled">
+                  <i class="bi {{ entryIcon(entry) }}"></i>
+                </div>
+
+                <!-- Body -->
+                <div class="entry-body">
+                  <div class="entry-desc">{{ entry.description }}</div>
+                  <div class="entry-meta">
+                    <span>{{ entry.accountName }}</span>
+                    @if (entry.sourceType === 'TRANSFER' && entry.relatedAccountName) {
+                      <span class="meta-sep">→</span>
+                      <span>{{ entry.relatedAccountName }}</span>
+                    }
+                    @if (entry.categoryName) {
+                      <span class="meta-sep">·</span>
+                      <span>{{ entry.categoryName }}</span>
+                    }
+                    @if (entry.projectName) {
+                      <span class="meta-sep">·</span>
+                      <span class="meta-project">{{ entry.projectName }}</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Amount -->
+                <div class="entry-amount"
+                     [class.amt-income]="entry.type === 'INCOME'"
+                     [class.amt-expense]="entry.type === 'EXPENSE'"
+                     [class.amt-transfer]="entry.sourceType === 'TRANSFER'">
+                  {{ amountSign(entry) }}{{ entry.amount | financialAmount }}
+                </div>
+
+                <!-- Actions -->
+                <div class="entry-actions">
+                  @if (entry.isScheduled) {
+                    <button class="btn-action btn-post" title="Post" (click)="postScheduledBill(entry)">
+                      <i class="bi bi-check-lg"></i>
+                    </button>
+                    <button class="btn-action btn-edit" title="Edit" (click)="editScheduledBill(entry)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn-action btn-cancel" title="Cancel" (click)="cancelScheduledBill(entry)">
+                      <i class="bi bi-x-lg"></i>
+                    </button>
+                  } @else if (entry.status === 'POSTED' && entry.sourceType !== 'TRANSFER') {
+                    <button class="btn-action btn-void" title="Void" (click)="voidTransaction(entry)">
+                      <i class="bi bi-slash-circle"></i>
+                    </button>
+                  }
+                </div>
+
+              </div>
+            }
+          </div>
+        </div>
+
+      }
+    </div>
+  }
+
+  <!-- Bottom sentinel — loads older history on scroll down -->
+  <div #bottomSentinel class="sentinel">
+    @if (loadingPast()) {
+      <span class="sentinel-spinner"><span class="spinner-border spinner-border-sm"></span> Loading…</span>
+    } @else if (!hasMorePast() && pastEntries().length > 0) {
+      <span class="sentinel-end">Beginning of history</span>
+    }
+  </div>
+
+</div>
