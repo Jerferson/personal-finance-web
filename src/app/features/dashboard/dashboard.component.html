@@ -88,8 +88,9 @@
       } @else {
         <p class="text-muted mt-3 mb-2">No data for this month yet.</p>
       }
-      <a class="btn btn-link ps-0 mt-1" routerLink="/reports">
-        <i class="bi bi-arrow-right"></i> View reports
+      <a class="dash-card-link" routerLink="/reports">
+        <span><i class="bi bi-bar-chart-line"></i> View reports</span>
+        <i class="bi bi-chevron-right"></i>
       </a>
     </div>
 
@@ -137,8 +138,9 @@
       } @else {
         <p class="text-muted mt-3 mb-2">Loading projection…</p>
       }
-      <a class="btn btn-link ps-0 mt-1" routerLink="/scheduled-bills">
-        <i class="bi bi-arrow-right"></i> View scheduled bills
+      <a class="dash-card-link" routerLink="/scheduled-bills">
+        <span><i class="bi bi-calendar-check"></i> View scheduled bills</span>
+        <i class="bi bi-chevron-right"></i>
       </a>
     </div>
 
@@ -148,7 +150,9 @@
   <div class="cc-card table-card">
     <div class="cc-row table-card-header">
       <p class="cc-section-title cc-grow" style="margin:0">Recent Transactions</p>
-      <a class="btn btn-link btn-sm" routerLink="/transactions">View all</a>
+      <a class="dash-view-all" routerLink="/transactions">
+        View all <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
 
     @if (recentTxns().length === 0) {

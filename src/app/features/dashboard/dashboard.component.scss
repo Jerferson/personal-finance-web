@@ -48,6 +48,50 @@
 .table-card { padding: 0; overflow: hidden; }
 .table-card-header { padding: 16px 20px 0; }
 
+/* Dashboard navigation links */
+.dash-card-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px -20px -20px;
+  padding: 11px 20px;
+  border-top: 1px solid var(--cc-border);
+  text-decoration: none;
+  color: var(--cc-muted);
+  font-size: 13px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  i { font-size: 12px; }
+  span i { margin-right: 6px; }
+
+  &:hover {
+    background: var(--cc-bg-soft);
+    color: var(--cc-primary);
+  }
+}
+
+.dash-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cc-primary);
+  text-decoration: none;
+  padding: 4px 12px;
+  border: 1px solid var(--cc-primary-soft);
+  border-radius: 20px;
+  background: var(--cc-primary-soft);
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background: #c7d2fe;
+    border-color: #c7d2fe;
+    color: var(--cc-primary-deep);
+  }
+}
+
 /* Account panel — summary + inline cards */
 .acct-panel-summary { margin-bottom: 16px; }
 .acct-summary-label {
