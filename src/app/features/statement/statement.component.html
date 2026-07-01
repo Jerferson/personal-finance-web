@@ -108,7 +108,11 @@
                     <button class="btn-action btn-delete" title="Delete" (click)="deleteScheduledBill(entry)">
                       <i class="bi bi-trash"></i>
                     </button>
-                  } @else if (entry.sourceType !== 'TRANSFER') {
+                  } @else if (entry.sourceType === 'TRANSFER') {
+                    <button class="btn-action btn-delete" title="Delete" (click)="deleteTransfer(entry)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  } @else {
                     <button class="btn-action btn-delete" title="Delete" (click)="deleteTransaction(entry)">
                       <i class="bi bi-trash"></i>
                     </button>

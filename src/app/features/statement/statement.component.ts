@@ -20,6 +20,7 @@ import { RefreshService } from '../../core/services/refresh.service';
 import { DialogService } from '../../shared/services/dialog.service';
 import { TransactionService } from '../../core/services/transaction.service';
 import { ScheduledBillService } from '../../core/services/scheduled-bill.service';
+import { TransferService } from '../../core/services/transfer.service';
 import { FinancialAmountPipe } from '../../shared/pipes/financial-amount.pipe';
 import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { TransactionCreateDialogComponent, TransactionCreateDialogData } from '../transactions/transaction-create-dialog.component';
@@ -83,6 +84,7 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
   private readonly statementService    = inject(StatementService);
   private readonly transactionService  = inject(TransactionService);
   private readonly scheduledBillService = inject(ScheduledBillService);
+  private readonly transferService     = inject(TransferService);
   private readonly dialog              = inject(DialogService);
   private readonly notify              = inject(NotificationService);
   private readonly refreshService      = inject(RefreshService);
@@ -192,6 +194,25 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
       if (ok) {
         this.transactionService.delete(entry.transactionId!).subscribe(() => {
           this.notify.success('Transaction deleted');
+          this.loadInitial();
+        });
+      }
+    });
+  }
+
+  deleteTransfer(entry: StatementEntry): void {
+    const ref = this.dialog.open<boolean, ConfirmDialogData>(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Transfer',
+        message: `Delete "${entry.description}"? This will reverse the ledger entries and cannot be undone.`,
+        confirmLabel: 'Delete',
+      },
+      width: '420px',
+    });
+    ref.afterClosed().subscribe(ok => {
+      if (ok) {
+        this.transferService.delete(entry.id).subscribe(() => {
+          this.notify.success('Transfer deleted');
           this.loadInitial();
         });
       }
