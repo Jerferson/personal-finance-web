@@ -3,9 +3,7 @@
   <!-- Header -->
   <div class="dash-header">
     <div>
-      <p class="dash-eyebrow">Financial Overview</p>
       <h2 class="dash-title">Dashboard</h2>
-      <p class="dash-subtitle">{{ summaryLabel }}</p>
     </div>
   </div>
 
@@ -159,7 +157,7 @@
       <app-empty-state icon="bi-receipt" title="No transactions yet"
         subtitle="Create a transaction to start tracking your finances" />
     } @else {
-      <div class="table-responsive">
+      <div class="table-responsive txn-scroll">
         <table class="table mb-0">
           <thead>
             <tr>

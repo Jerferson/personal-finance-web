@@ -95,7 +95,7 @@ export class DashboardComponent {
       accounts:   this.accountService.getAll(1, 100),
       summary:    this.reportService.getMonthlySummary(this.currentMonth).pipe(catchError(() => of(null))),
       cashflow:   this.projectionService.getCashflow(MONTHS_AHEAD).pipe(catchError(() => of(null))),
-      recentTxns: this.transactionService.getAll({ limit: 5, page: 1 }),
+      recentTxns: this.transactionService.getAll({ limit: 15, page: 1 }),
     }).subscribe(({ accounts, summary, cashflow, recentTxns }) => {
       this.monthlySummary.set(summary);
       this.cashflow.set(cashflow);

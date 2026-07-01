@@ -48,6 +48,16 @@
 .table-card { padding: 0; overflow: hidden; }
 .table-card-header { padding: 16px 20px 0; }
 
+.txn-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cc-border) transparent;
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: var(--cc-border); border-radius: 4px; }
+}
+
 /* Dashboard navigation links */
 .dash-card-link {
   display: flex;
