@@ -29,7 +29,7 @@ A modern single-page application for managing personal finances, built with **An
 | `/projects` | Manage expense projects (e.g. trips, renovations) with financial summary |
 | `/extrato` | Unified statement feed — posted transactions, transfers, and upcoming scheduled bills with infinite scroll |
 | `/transactions` | Transactions list with filters (account, type, date range) — create, edit, delete |
-| `/scheduled-bills` | Manage future bills and income — create, post (converts to transaction), cancel |
+| `/scheduled-bills` | Manage future bills and income — create, edit, post (converts to transaction), delete |
 | `/transfers` | List and create transfers between accounts |
 | `/reports` | Monthly expense report by category and income/expense summary |
 

@@ -206,20 +206,20 @@ export class StatementComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  cancelScheduledBill(entry: StatementEntry): void {
+  deleteScheduledBill(entry: StatementEntry): void {
     if (!entry.scheduledBillId) return;
     const ref = this.dialog.open<boolean, ConfirmDialogData>(ConfirmDialogComponent, {
       data: {
-        title: 'Cancel Scheduled Bill',
-        message: `Cancel "${entry.description}"?`,
-        confirmLabel: 'Cancel Bill',
+        title: 'Delete Scheduled Bill',
+        message: `Delete "${entry.description}"? This cannot be undone.`,
+        confirmLabel: 'Delete',
       },
       width: '400px',
     });
     ref.afterClosed().subscribe(ok => {
       if (ok) {
-        this.scheduledBillService.cancel(entry.scheduledBillId!).subscribe(() => {
-          this.notify.success('Scheduled bill cancelled');
+        this.scheduledBillService.delete(entry.scheduledBillId!).subscribe(() => {
+          this.notify.success('Scheduled bill deleted');
           this.loadInitial();
         });
       }

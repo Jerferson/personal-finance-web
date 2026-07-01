@@ -1,6 +1,6 @@
 import { TransactionType } from './transaction.model';
 
-export type ScheduledBillStatus = 'SCHEDULED' | 'POSTED' | 'CANCELLED';
+export type ScheduledBillStatus = 'SCHEDULED' | 'POSTED';
 
 export interface ScheduledBill {
   id: string;

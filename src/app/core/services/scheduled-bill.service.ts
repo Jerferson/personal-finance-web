@@ -40,10 +40,6 @@ export class ScheduledBillService {
     return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/post`, {});
   }
 
-  cancel(id: string): Observable<ScheduledBill> {
-    return this.http.post<ScheduledBill>(`/scheduled-bills/${id}/cancel`, {});
-  }
-
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`/scheduled-bills/${id}`);
   }

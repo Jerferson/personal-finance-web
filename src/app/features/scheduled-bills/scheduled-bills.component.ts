@@ -71,7 +71,7 @@ export class ScheduledBillsComponent {
   clearFilters() { this.filterFg.reset({ status: '', startDate: '', endDate: '' }); }
 
   statusChipClass(status: ScheduledBillStatus): string {
-    return { SCHEDULED: 'cc-chip-scheduled', POSTED: 'cc-chip-posted', CANCELLED: 'cc-chip-cancelled' }[status];
+    return { SCHEDULED: 'cc-chip-scheduled', POSTED: 'cc-chip-posted' }[status];
   }
 
   openForm(bill?: ScheduledBill) {
@@ -96,24 +96,6 @@ export class ScheduledBillsComponent {
       if (ok) {
         this.scheduledBillService.post(bill.id).subscribe(() => {
           this.notify.success('Bill posted — transaction created');
-          this.load();
-        });
-      }
-    });
-  }
-
-  cancelBill(bill: ScheduledBill) {
-    const ref = this.dialog.open<boolean, ConfirmDialogData>(ConfirmDialogComponent, {
-      data: {
-        title: 'Cancel Scheduled Bill',
-        message: `Cancel "${bill.description}"? This cannot be undone.`,
-        confirmLabel: 'Cancel Bill',
-      }, width: '400px',
-    });
-    ref.afterClosed().subscribe(ok => {
-      if (ok) {
-        this.scheduledBillService.cancel(bill.id).subscribe(() => {
-          this.notify.success('Scheduled bill cancelled');
           this.load();
         });
       }

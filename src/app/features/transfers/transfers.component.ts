@@ -7,6 +7,7 @@ import { TransferService } from '../../core/services/transfer.service';
 import { NotificationService } from '../../core/services/notification.service';
 import { RefreshService } from '../../core/services/refresh.service';
 import { DialogService } from '../../shared/services/dialog.service';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { EmptyStateComponent } from '../../shared/components/empty-state/empty-state.component';
 import { BsPaginatorComponent, PageEvent } from '../../shared/components/bs-paginator/bs-paginator.component';
 import { FinancialAmountPipe } from '../../shared/pipes/financial-amount.pipe';
@@ -54,6 +55,25 @@ export class TransfersComponent {
     const ref = this.dialog.open<boolean>(TransferFormDialogComponent, { width: '480px' });
     ref.afterClosed().subscribe(ok => {
       if (ok) { this.notify.success('Transfer completed successfully'); this.load(); }
+    });
+  }
+
+  deleteTransfer(transfer: Transfer): void {
+    const ref = this.dialog.open<boolean, ConfirmDialogData>(ConfirmDialogComponent, {
+      data: {
+        title: 'Delete Transfer',
+        message: `Delete "${transfer.description}"? This will reverse the ledger entries and cannot be undone.`,
+        confirmLabel: 'Delete',
+      },
+      width: '420px',
+    });
+    ref.afterClosed().subscribe(ok => {
+      if (ok) {
+        this.transferService.delete(transfer.id).subscribe(() => {
+          this.notify.success('Transfer deleted');
+          this.load();
+        });
+      }
     });
   }
 }

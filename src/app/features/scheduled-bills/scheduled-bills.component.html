@@ -13,7 +13,6 @@
         <option value="">All statuses</option>
         <option value="SCHEDULED">Scheduled</option>
         <option value="POSTED">Posted</option>
-        <option value="CANCELLED">Cancelled</option>
       </select>
 
       <input class="form-control form-control-sm filter-field" type="date"
@@ -50,8 +49,7 @@
           </thead>
           <tbody>
             @for (row of bills(); track row.id) {
-              <tr [class.row-posted]="row.status === 'POSTED'"
-                  [class.row-cancelled]="row.status === 'CANCELLED'">
+              <tr [class.row-posted]="row.status === 'POSTED'">
                 <td class="date-cell">{{ row.dueDate | date:'M/d/yyyy' }}</td>
                 <td class="desc-cell">{{ row.description }}</td>
                 <td>{{ accountMap().get(row.accountId)?.name ?? '—' }}</td>
@@ -72,9 +70,6 @@
                     </button>
                     <button class="btn btn-sm btn-outline-success" title="Post (mark as paid)" (click)="postBill(row)">
                       <i class="bi bi-check-circle"></i>
-                    </button>
-                    <button class="btn btn-sm btn-outline-warning" title="Cancel" (click)="cancelBill(row)">
-                      <i class="bi bi-x-circle"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteBill(row)">
                       <i class="bi bi-trash"></i>

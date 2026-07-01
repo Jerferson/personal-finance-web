@@ -19,4 +19,8 @@ export class TransferService {
       headers: new HttpHeaders({ 'Idempotency-Key': idempotencyKey }),
     });
   }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`/transfers/${id}`);
+  }
 }

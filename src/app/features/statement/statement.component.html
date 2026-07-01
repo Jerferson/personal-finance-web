@@ -105,8 +105,8 @@
                     <button class="btn-action btn-edit" title="Edit" (click)="editScheduledBill(entry)">
                       <i class="bi bi-pencil"></i>
                     </button>
-                    <button class="btn-action btn-cancel" title="Cancel" (click)="cancelScheduledBill(entry)">
-                      <i class="bi bi-x-lg"></i>
+                    <button class="btn-action btn-delete" title="Delete" (click)="deleteScheduledBill(entry)">
+                      <i class="bi bi-trash"></i>
                     </button>
                   } @else if (entry.sourceType !== 'TRANSFER') {
                     <button class="btn-action btn-delete" title="Delete" (click)="deleteTransaction(entry)">
