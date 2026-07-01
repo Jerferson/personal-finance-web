@@ -1,60 +1,158 @@
-# FinancialControl
+# Personal Finance Manager — Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
+A modern single-page application for managing personal finances, built with **Angular 20**, **Angular CDK**, and standalone component architecture. Consumes the [Personal Finance Manager API](../api/README.md).
 
-## Development server
+---
 
-To start a local development server, run:
+## Tech Stack
 
-```bash
-ng serve
+| Layer | Technology |
+|---|---|
+| Framework | Angular 20.3 |
+| Language | TypeScript 5.9 |
+| UI Components | Angular CDK 20.2 + Angular Material 20.2 |
+| Reactivity | Angular Signals + RxJS 7.8 |
+| HTTP | Angular HttpClient with functional interceptors |
+| Testing | Jasmine 5.9 + Karma 6.4 |
+| Build | Angular CLI 20.3 |
+
+---
+
+## Features
+
+| Route | Description |
+|---|---|
+| `/dashboard` | Total balance, monthly summary, 13-month cashflow projection, recent transactions |
+| `/accounts` | Manage bank accounts (CHECKING, SAVINGS, CASH) — create, edit, delete, view balance |
+| `/accounts/:id` | Account detail with balance and last 10 transactions |
+| `/categories` | Manage INCOME and EXPENSE categories |
+| `/projects` | Manage expense projects (e.g. trips, renovations) with financial summary |
+| `/extrato` | Unified statement feed — posted transactions, transfers, and upcoming scheduled bills with infinite scroll |
+| `/transactions` | Transactions list with filters (account, type, date range) — create, edit, delete |
+| `/scheduled-bills` | Manage future bills and income — create, post (converts to transaction), cancel |
+| `/transfers` | List and create transfers between accounts |
+| `/reports` | Monthly expense report by category and income/expense summary |
+
+---
+
+## Architecture
+
+```
+src/app/
+├── features/           # Route-level components (one folder per route)
+├── core/
+│   ├── models/         # TypeScript interfaces (Account, Transaction, etc.)
+│   ├── services/       # API service layer (one service per resource)
+│   └── interceptors/   # HTTP interceptors (base URL, loading, error)
+├── shared/
+│   ├── components/     # Reusable UI (shell, dialogs, paginator, toast, empty state)
+│   ├── pipes/          # FinancialAmountPipe (USD formatting)
+│   └── services/       # Dialog, Toast, Loading, Refresh services
+├── app.routes.ts       # Lazy-loaded route definitions
+├── app.config.ts       # App providers (router, HttpClient, interceptors, locale)
+└── environments/       # API base URL per environment
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Key architectural choices:**
+- **Standalone components** — no NgModules
+- **Lazy loading** — every route is lazy-loaded
+- **Signals** — reactive local state without RxJS Subjects
+- **OnPush change detection** — all components
+- **inject() syntax** — constructor-free dependency injection
+- **takeUntilDestroyed()** — automatic subscription cleanup
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## HTTP Interceptors
 
-```bash
-ng generate component component-name
-```
+| Interceptor | What it does |
+|---|---|
+| `apiBaseInterceptor` | Prepends `environment.apiBaseUrl` to every relative request |
+| `loadingInterceptor` | Shows global spinner (150ms delay to avoid flicker) |
+| `errorInterceptor` | 404 → rethrows for local handling; 500+ → "Server unavailable"; others → extracts `error.message` |
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## How to Run Locally
 
-## Building
+### Prerequisites
 
-To build the project run:
+- Node.js 18+
+- API running (see [api/README.md](../api/README.md))
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Setup
 
 ```bash
-ng e2e
+# Install dependencies
+npm install
+
+# Start development server
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The app will be available at **http://localhost:4200** and auto-reloads on file changes.
 
-## Additional Resources
+By default the dev environment points to `http://localhost:3002`. If your API runs on a different port, update `src/environments/environment.ts`:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# personal-finance-web
+```typescript
+export const environment = {
+  apiBaseUrl: 'http://localhost:3000',
+  production: false,
+};
+```
+
+---
+
+## Available Scripts
+
+```bash
+npm start         # Development server → http://localhost:4200
+npm run build     # Production build → dist/
+npm run watch     # Incremental build in watch mode
+npm test          # Unit tests (Karma + Jasmine, requires Chrome)
+```
+
+---
+
+## Key Design Patterns
+
+### Dialogs
+
+All create/edit forms open as CDK dialogs via the shared `DialogService`:
+
+```typescript
+const ref = this.dialog.open(MyFormDialogComponent, { data: { item } });
+ref.closed.subscribe(result => { if (result) this.load(); });
+```
+
+### Idempotency
+
+Financial write operations (create transaction, scheduled bill, transfer) send a `crypto.randomUUID()` as `Idempotency-Key` header — preventing duplicates on retries or double-clicks.
+
+### Global Refresh
+
+`RefreshService.emit()` signals all subscribed components (dashboard, statement, transactions) to reload their data after a mutation.
+
+### Statement — Extrato
+
+The `/extrato` route uses **bidirectional infinite scroll** via `IntersectionObserver`:
+- Scrolling up loads older posted records (`past` mode)
+- Scrolling down loads upcoming scheduled bills (`future` mode)
+- Initial load fetches both in a single request (`initial` mode)
+
+### Monetary values
+
+All amounts come from the API as strings to avoid floating-point issues. The `FinancialAmountPipe` formats them as USD:
+
+```html
+{{ transaction.amount | financialAmount }}  →  "$1,200.50"
+```
+
+---
+
+## Environment Variables
+
+| File | Used for |
+|---|---|
+| `src/environments/environment.ts` | Development — set `apiBaseUrl` to match your local API port |
+| `src/environments/environment.prod.ts` | Production — `apiBaseUrl: ''` uses relative URLs |
